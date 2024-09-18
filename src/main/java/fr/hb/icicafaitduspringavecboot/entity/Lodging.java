@@ -47,7 +47,7 @@ public class Lodging {
     @OneToMany(mappedBy = "lodging")
     private List<Review> reviews;
 
-    @OneToMany(mappedBy = "lodgingId")
+    @OneToMany(mappedBy = "lodging")
     private List<Favorite> favorites;
 
     @OneToMany(mappedBy = "lodging")

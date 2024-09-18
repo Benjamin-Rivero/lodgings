@@ -35,8 +35,8 @@ public class UserController {
 
     @PostMapping("/favorite")
     public void favorite(@RequestBody Favorite favorite){
-        Lodging lodging = lodgingRepository.findById(favorite.getLodgingId()).get();
-        User user = userRepository.findById(favorite.getUserId()).get();
+        Lodging lodging = lodgingRepository.findById(favorite.getId().getLodgingId()).get();
+        User user = userRepository.findById(favorite.getId().getUserId()).get();
         favoriteRepository.saveAndFlush(favorite);
         user.addFavorite(favorite);
         lodging.addFavorite(favorite);

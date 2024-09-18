@@ -42,7 +42,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Review> reviews;
 
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "user")
     private List<Favorite> favorites;
 
     @OneToMany(mappedBy = "user")

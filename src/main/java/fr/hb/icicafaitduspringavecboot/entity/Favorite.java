@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@IdClass(FavoriteId.class)
+//@IdClass(FavoriteId.class)
 @Data
 public class Favorite {
 
@@ -15,26 +15,28 @@ public class Favorite {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;*/
 
-    /*@EmbeddedId
-    private FavoriteId id;*/
+    @EmbeddedId
+    private FavoriteId id;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
 
-    /*@ManyToOne
-//    @JoinColumn(name = "user_id")
+    @MapsId("userId")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
 
+    @MapsId("lodgingId")
     @ManyToOne
-//    @JoinColumn(name = "lodging_id")
-    private Lodging lodging;*/
+    @JoinColumn(name = "lodging_id")
+    private Lodging lodging;
 
-    @Id
+    /*@Id
     private String userId;
 
     @Id
-    private String lodgingId;
+    private String lodgingId;*/
 
 }
