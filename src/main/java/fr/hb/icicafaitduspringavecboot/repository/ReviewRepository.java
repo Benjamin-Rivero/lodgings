@@ -1,9 +1,9 @@
 package fr.hb.icicafaitduspringavecboot.repository;
 
-import fr.hb.icicafaitduspringavecboot.entity.User;
+import fr.hb.icicafaitduspringavecboot.entity.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository  extends JpaRepository<User,String> {
+public interface ReviewRepository extends JpaRepository<Review,Long> {
 }

@@ -19,7 +19,7 @@ public class LodgingController {
 
     @PostMapping
     public Lodging createLodging(@RequestBody LodgingDto lodgingDto){
-        return lodgingService.createLodging(lodgingDto);
+        return lodgingService.create(lodgingDto);
     }
 
 }

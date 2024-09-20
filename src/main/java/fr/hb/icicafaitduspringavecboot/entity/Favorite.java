@@ -2,6 +2,7 @@ package fr.hb.icicafaitduspringavecboot.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CompositeType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

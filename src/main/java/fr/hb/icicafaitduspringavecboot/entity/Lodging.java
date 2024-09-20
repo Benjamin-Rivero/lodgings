@@ -22,6 +22,9 @@ public class Lodging {
     private int capacity;
 
     @Column(nullable = false)
+    private boolean isAccessible;
+
+    @Column(nullable = false)
     private int nightPrice;
 
     @Column(columnDefinition = "TEXT")

@@ -1,11 +1,13 @@
 package fr.hb.icicafaitduspringavecboot.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Data
 public class Room {
 
     @Id

@@ -37,8 +37,8 @@ public class Address {
     @Column(nullable = false)
     private boolean isBilling;
 
-    @OneToOne
-    private Lodging lodging;
+//    @OneToOne
+//    private Lodging lodging;
 
     @ManyToOne
     private User user;

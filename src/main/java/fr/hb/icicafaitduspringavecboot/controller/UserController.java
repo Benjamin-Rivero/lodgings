@@ -1,8 +1,6 @@
 package fr.hb.icicafaitduspringavecboot.controller;
 
-import fr.hb.icicafaitduspringavecboot.dto.UserDto;
-import fr.hb.icicafaitduspringavecboot.entity.Favorite;
-import fr.hb.icicafaitduspringavecboot.entity.Lodging;
+import fr.hb.icicafaitduspringavecboot.dto.UserCreationDto;
 import fr.hb.icicafaitduspringavecboot.entity.User;
 import fr.hb.icicafaitduspringavecboot.repository.FavoriteRepository;
 import fr.hb.icicafaitduspringavecboot.repository.LodgingRepository;
@@ -29,19 +27,10 @@ public class UserController {
     }
 
     @PostMapping
-    public User createLodging(@RequestBody UserDto userDto){
-        return userService.createUser(userDto);
+    public User createLodging(@RequestBody UserCreationDto userCreationDto){
+        return userService.createUser(userCreationDto);
     }
 
-    @PostMapping("/favorite")
-    public void favorite(@RequestBody Favorite favorite){
-        Lodging lodging = lodgingRepository.findById(favorite.getId().getLodgingId()).get();
-        User user = userRepository.findById(favorite.getId().getUserId()).get();
-        favoriteRepository.saveAndFlush(favorite);
-        user.addFavorite(favorite);
-        lodging.addFavorite(favorite);
-        lodgingRepository.saveAndFlush(lodging);
-        userRepository.saveAndFlush(user);
-    }
+
 
 }
