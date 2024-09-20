@@ -1,15 +1,18 @@
 package fr.hb.icicafaitduspringavecboot.entity;
 
+import fr.hb.icicafaitduspringavecboot.entity.interfaces.CreatedAtInterface;
+import fr.hb.icicafaitduspringavecboot.entity.interfaces.SluggerInterface;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Data
-public class User {
+public class User implements CreatedAtInterface, SluggerInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -43,20 +46,26 @@ public class User {
 
     private String photo;
 
-    @OneToMany(mappedBy = "user")
-    private List<Review> reviews;
+    private String slug;
 
     @OneToMany(mappedBy = "user")
-    private List<Favorite> favorites;
+    private List<Review> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Booking> bookings;
+    private List<Favorite> favorites = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Address> addresses;
+    private List<Booking> bookings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Address> addresses = new ArrayList<>();
 
     public void addFavorite(Favorite favorite){
         this.favorites.add(favorite);
     }
 
+    @Override
+    public String getField() {
+        return firstName+"-"+lastName;
+    }
 }

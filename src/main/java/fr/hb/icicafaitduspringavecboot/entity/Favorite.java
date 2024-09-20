@@ -1,5 +1,6 @@
 package fr.hb.icicafaitduspringavecboot.entity;
 
+import fr.hb.icicafaitduspringavecboot.entity.interfaces.CreatedAtInterface;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CompositeType;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 //@IdClass(FavoriteId.class)
 @Data
-public class Favorite {
+public class Favorite implements CreatedAtInterface {
 
     /*@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

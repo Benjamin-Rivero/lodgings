@@ -1,5 +1,6 @@
 package fr.hb.icicafaitduspringavecboot.entity;
 
+import fr.hb.icicafaitduspringavecboot.entity.interfaces.CreatedAtInterface;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class Review {
+public class Review implements CreatedAtInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

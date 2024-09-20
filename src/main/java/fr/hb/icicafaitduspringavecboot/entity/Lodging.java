@@ -1,5 +1,6 @@
 package fr.hb.icicafaitduspringavecboot.entity;
 
+import fr.hb.icicafaitduspringavecboot.entity.interfaces.SluggerInterface;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,7 +10,7 @@ import java.util.List;
 @Entity
 @Table(indexes = {@Index(columnList = "slug", unique = true)})
 @Data
-public class Lodging {
+public class Lodging implements SluggerInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -60,4 +61,8 @@ public class Lodging {
         this.favorites.add(favorite);
     }
 
+    @Override
+    public String getField() {
+        return name;
+    }
 }
