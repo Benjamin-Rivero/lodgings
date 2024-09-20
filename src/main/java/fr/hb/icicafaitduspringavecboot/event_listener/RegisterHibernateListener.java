@@ -15,6 +15,7 @@ public class RegisterHibernateListener {
 
     private final EntityManagerFactory emf;
     private final CreatedAtListener createdAtListener;
+    private final SluggerEventListener sluggerEventListener;
 
     @PostConstruct
     private void init() {
@@ -22,6 +23,8 @@ public class RegisterHibernateListener {
         EventListenerRegistry registry = sessionFactory.getServiceRegistry().getService(EventListenerRegistry.class);
         if (registry != null) {
             registry.getEventListenerGroup(EventType.PRE_INSERT).appendListener(createdAtListener);
+            registry.getEventListenerGroup(EventType.PRE_INSERT).appendListener(sluggerEventListener);
+            registry.getEventListenerGroup(EventType.PRE_UPDATE).appendListener(sluggerEventListener);
         }
     }
 
