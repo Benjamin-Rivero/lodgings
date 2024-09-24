@@ -1,5 +1,6 @@
 package fr.hb.icicafaitduspringavecboot.service;
 
+import fr.hb.icicafaitduspringavecboot.dto.AddressDto;
 import fr.hb.icicafaitduspringavecboot.entity.Address;
 import fr.hb.icicafaitduspringavecboot.entity.User;
 import fr.hb.icicafaitduspringavecboot.repository.AddressRepository;
@@ -10,20 +11,35 @@ import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
-public class AddressService implements ServiceInterface<Address,Long> {
+public class AddressService implements ServiceInterface<Address,Long, AddressDto,AddressDto> {
 
     private final AddressRepository addressRepository;
 
     @Override
-    public Address create(Address object) {
-        return addressRepository.saveAndFlush(object);
+    public Address create(AddressDto object) {
+        return addressRepository.saveAndFlush(toEntity(object));
+    }
+
+    private Address toEntity(AddressDto object) {
+        Address address = new Address();
+        address.setNumber(object.getNumber());
+        address.setStreet(object.getStreet());
+        address.setCity(object.getCity());
+        address.setZipCode(object.getZipCode());
+        address.setCountry(object.getCountry());
+        address.setLatitude(object.getLatitude());
+        address.setLongitude(object.getLongitude());
+        address.setMore(object.getMore());
+        address.setBilling(object.getIsBilling());
+        return address;
     }
 
     @Override
-    public Address update(Address object, Long id) {
-        object.setId(id);
-        addressRepository.flush();
-        return object;
+    public Address update(AddressDto object, Long id) {
+        Address address = toEntity(object);
+        address.setId(id);
+        addressRepository.saveAndFlush(address);
+        return address;
     }
 
     @Override

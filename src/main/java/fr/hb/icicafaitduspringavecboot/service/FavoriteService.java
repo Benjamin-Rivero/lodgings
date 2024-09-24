@@ -13,40 +13,34 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class FavoriteService implements ServiceInterface<Favorite,FavoriteId> {
+public class FavoriteService {
 
     private final FavoriteRepository favoriteRepository;
     private final LodgingService lodgingService;
     private final UserService userService;
 
-    public Favorite create(Favorite favorite){
-        return favoriteRepository.saveAndFlush(favorite);
+    public Favorite create(FavoriteDto favoriteDto){
+        return favoriteRepository.saveAndFlush(toEntity(favoriteDto));
     }
 
-    @Override
-    public Favorite update(Favorite object, FavoriteId id) {
-        object.setId(id);
-        favoriteRepository.flush();
-        return object;
+    private Favorite toEntity(FavoriteDto favoriteDto) {
+        Favorite favorite = new Favorite();
+        Lodging lodging = lodgingService.findById(favoriteDto.getIds().getLodgingId());
+        User user = userService.findById(favoriteDto.getIds().getUserId());
+        favorite.setId(favoriteDto.getIds());
+        favorite.setLodging(lodging);
+        favorite.setUser(user);
+        return favorite;
     }
 
-    @Override
+
     public void delete(Favorite object) {
         if(object!=null) favoriteRepository.delete(object);
     }
 
-    @Override
+
     public Favorite findById(FavoriteId id) {
         return favoriteRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
-    public Favorite createFavorite(FavoriteDto favoriteDto) {
-        Favorite favorite = new Favorite();
-        Lodging lodging = lodgingService.findById(favoriteDto.getIds().getLodgingId());
-        User user = userService.findById(favoriteDto.getIds().getUserId());
-        favorite.setId(new FavoriteId(user.getId(),lodging.getId()));
-        favorite.setLodging(lodging);
-        favorite.setUser(user);
-        return create(favorite);
-    }
 }

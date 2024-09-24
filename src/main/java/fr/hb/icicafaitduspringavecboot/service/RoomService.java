@@ -1,5 +1,6 @@
 package fr.hb.icicafaitduspringavecboot.service;
 
+import fr.hb.icicafaitduspringavecboot.dto.RoomDto;
 import fr.hb.icicafaitduspringavecboot.entity.Room;
 import fr.hb.icicafaitduspringavecboot.repository.RoomRepository;
 import fr.hb.icicafaitduspringavecboot.service.interfaces.ServiceInterface;
@@ -12,20 +13,28 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
-public class RoomService implements ServiceListInterface<Room,Long> {
+public class RoomService implements ServiceListInterface<Room,Long, RoomDto,RoomDto> {
 
     private final RoomRepository roomRepository;
 
     @Override
-    public Room create(Room object) {
-        return roomRepository.saveAndFlush(object);
+    public Room create(RoomDto object) {
+        return roomRepository.saveAndFlush(toEntity(object));
+    }
+
+    private Room toEntity(RoomDto object) {
+        Room room = new Room();
+        room.setTranslationKey("oui");
+        room.setType(object.getType());
+        return room;
     }
 
     @Override
-    public Room update(Room object, Long id) {
-        object.setId(id);
-        roomRepository.flush();
-        return object;
+    public Room update(RoomDto object, Long id) {
+        Room room = toEntity(object);
+        room.setId(id);
+        roomRepository.saveAndFlush(room);
+        return room;
     }
 
     @Override

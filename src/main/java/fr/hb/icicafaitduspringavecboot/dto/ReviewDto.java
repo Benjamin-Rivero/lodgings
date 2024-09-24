@@ -15,4 +15,10 @@ public class ReviewDto {
     @Max(value = 5,message = "The rating must be less than 5")
     private float rating;
 
+    @NotBlank
+    private String userId;
+
+    @NotBlank
+    private String lodgingId;
+
 }

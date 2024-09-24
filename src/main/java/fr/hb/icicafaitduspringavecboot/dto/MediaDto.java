@@ -8,4 +8,6 @@ public class MediaDto {
 
     private String pathWithExtension;
 
+//    private Long lodgingId;
+
 }

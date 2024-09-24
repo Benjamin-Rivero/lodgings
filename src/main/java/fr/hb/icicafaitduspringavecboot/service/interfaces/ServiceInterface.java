@@ -1,10 +1,10 @@
 package fr.hb.icicafaitduspringavecboot.service.interfaces;
 
-public interface ServiceInterface<T,L> {
+public interface ServiceInterface<T,L,C,U> {
 
-    T create(T object);
+    T create(C object);
 
-    T update(T object, L id);
+    T update(U object, L id);
 
     void delete(T object);
 

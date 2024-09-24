@@ -12,9 +12,4 @@ public class AddressController {
 
     private final AddressRepository addressRepository;
 
-    @PostMapping
-    public Address createAddress(@RequestBody Address address){
-        return addressRepository.saveAndFlush(address);
-    }
-
 }

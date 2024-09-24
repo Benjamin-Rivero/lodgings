@@ -36,13 +36,14 @@ public class Lodging implements SluggerInterface {
 
     @ManyToMany
     @JoinTable(
-            name = "lodging_room",
-            joinColumns = @JoinColumn(name = "lodging_id"),
-            inverseJoinColumns = @JoinColumn(name = "room_id")
+            name = "lodgingRoom",
+            joinColumns = @JoinColumn(name = "lodgingId"),
+            inverseJoinColumns = @JoinColumn(name = "roomId")
     )
     private List<Room> rooms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "lodging")
+    @OneToMany
+    @JoinColumn(name = "lodgingId")
     private List<Media> medias;
 
     @OneToOne

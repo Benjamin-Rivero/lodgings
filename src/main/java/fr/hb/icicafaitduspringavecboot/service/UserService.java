@@ -1,6 +1,7 @@
 package fr.hb.icicafaitduspringavecboot.service;
 
 import fr.hb.icicafaitduspringavecboot.dto.UserCreationDto;
+import fr.hb.icicafaitduspringavecboot.dto.UserUpdateDto;
 import fr.hb.icicafaitduspringavecboot.entity.User;
 import fr.hb.icicafaitduspringavecboot.repository.UserRepository;
 import fr.hb.icicafaitduspringavecboot.service.interfaces.ServiceListInterface;
@@ -12,11 +13,11 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class UserService implements ServiceListInterface<User, String> {
+public class UserService implements ServiceListInterface<User, String,UserCreationDto, UserUpdateDto> {
 
     private final UserRepository userRepository;
 
-    public User createUser(UserCreationDto userCreationDto){
+    public User create(UserCreationDto userCreationDto){
         return userRepository.saveAndFlush(toEntity(userCreationDto));
     }
 
@@ -32,16 +33,17 @@ public class UserService implements ServiceListInterface<User, String> {
     }
 
 
-    @Override
-    public User create(User object) {
-        return userRepository.saveAndFlush(object);
-    }
+
 
     @Override
-    public User update(User object, String id) {
-        object.setId(id);
-        userRepository.flush();
-        return object;
+    public User update(UserUpdateDto object, String id) {
+        User user = findById(id);
+        user.setFirstName(object.getFirstName());
+        user.setLastName(object.getLastName());
+        user.setPassword(object.getPassword());
+        user.setId(id);
+        userRepository.saveAndFlush(user);
+        return user;
     }
 
     @Override

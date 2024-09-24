@@ -21,7 +21,7 @@ public class FavoriteController {
 
     @PostMapping("/favorite")
     public Favorite favorite(@RequestBody FavoriteDto favoriteDto){
-        return favoriteService.createFavorite(favoriteDto);
+        return favoriteService.create(favoriteDto);
     }
 
 }

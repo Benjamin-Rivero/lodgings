@@ -40,7 +40,7 @@ public class Address {
 //    @OneToOne
 //    private Lodging lodging;
 
-    @ManyToOne
-    private User user;
+//    @ManyToOne
+//    private User user;
 
 }

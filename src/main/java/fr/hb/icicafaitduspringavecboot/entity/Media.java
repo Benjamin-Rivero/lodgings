@@ -25,7 +25,7 @@ public class Media {
     @Column(nullable = false)
     private String extension;
 
-    @ManyToOne
-    private Lodging lodging;
+//    @ManyToOne
+//    private Lodging lodging;
 
 }

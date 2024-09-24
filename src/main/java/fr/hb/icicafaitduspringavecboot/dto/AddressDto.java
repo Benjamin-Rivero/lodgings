@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LodgingAddressDto {
+public class AddressDto {
 
     @NotBlank(message = "The street must have a value")
     private String street;
@@ -25,11 +25,13 @@ public class LodgingAddressDto {
     private String country;
 
     @Positive(message = "The longitude must be positive")
-    private float longitude;
+    private Float longitude;
 
     @Positive(message = "The latitude must be positive")
-    private float latitude;
+    private Float latitude;
 
     private String more;
+
+    private Boolean isBilling;
 
 }

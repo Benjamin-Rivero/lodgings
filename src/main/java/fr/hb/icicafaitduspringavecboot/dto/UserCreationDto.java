@@ -8,7 +8,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class UserCreationDto {
+public class UserCreationDto{
 
     @NotBlank(message = "The first name must have a value")
     private String firstName;
@@ -28,5 +28,8 @@ public class UserCreationDto {
     @NotNull(message = "The birth date must be set")
     @Past(message = "The birth date must be in the past")
     private LocalDate birthDate;
+
+    @NotNull(message = "You have to set an address")
+    private AddressDto addressDto;
 
 }

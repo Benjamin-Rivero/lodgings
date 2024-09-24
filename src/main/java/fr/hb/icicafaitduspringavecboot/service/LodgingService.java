@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
-public class LodgingService implements ServiceInterface<Lodging,String> {
+public class LodgingService implements ServiceInterface<Lodging,String,LodgingDto,LodgingDto> {
 
     private final LodgingRepository lodgingRepository;
     private final AddressService addressService;
@@ -24,7 +24,7 @@ public class LodgingService implements ServiceInterface<Lodging,String> {
         lodgingRepository.saveAndFlush(lodging);
 //        address.setLodging(lodging);
         addressRepository.saveAndFlush(address);
-        return create(lodging);
+        return lodgingRepository.saveAndFlush(lodging);
     }
 
     public Lodging toEntity(LodgingDto lodgingDto){
@@ -38,15 +38,11 @@ public class LodgingService implements ServiceInterface<Lodging,String> {
     }
 
     @Override
-    public Lodging create(Lodging object) {
-        return lodgingRepository.saveAndFlush(object);
-    }
-
-    @Override
-    public Lodging update(Lodging object, String id) {
-        object.setId(id);
-        lodgingRepository.flush();
-        return object;
+    public Lodging update(LodgingDto object, String id) {
+        Lodging lodging = toEntity(object);
+        lodging.setId(id);
+        lodgingRepository.saveAndFlush(lodging);
+        return lodging;
     }
 
     @Override
@@ -54,6 +50,7 @@ public class LodgingService implements ServiceInterface<Lodging,String> {
         if(object!=null) lodgingRepository.delete(object);
     }
 
+    @Override
     public Lodging findById(String id){
         return lodgingRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }

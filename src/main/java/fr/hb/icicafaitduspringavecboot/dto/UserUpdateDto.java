@@ -8,7 +8,7 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter
-public class UserUpdateDto {
+public class UserUpdateDto{
 
     @NotBlank(message = "The first name must have a value")
     private String firstName;

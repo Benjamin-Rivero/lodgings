@@ -62,7 +62,6 @@ public class InitDataLoaderConfig implements CommandLineRunner {
             user.setRole(faker.dog().breed());
             userRepository.save(user);
             Address address = createRandomAddress(faker);
-            address.setUser(user);
             addressRepository.save(address);
             user.getAddresses().add(address);
             userRepository.save(user);

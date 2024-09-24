@@ -57,7 +57,8 @@ public class User implements CreatedAtInterface, SluggerInterface {
     @OneToMany(mappedBy = "user")
     private List<Booking> bookings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany
+    @JoinColumn(name = "userId")
     private List<Address> addresses = new ArrayList<>();
 
     public void addFavorite(Favorite favorite){

@@ -28,7 +28,7 @@ public class UserController {
 
     @PostMapping
     public User createLodging(@RequestBody UserCreationDto userCreationDto){
-        return userService.createUser(userCreationDto);
+        return userService.create(userCreationDto);
     }
 
 
