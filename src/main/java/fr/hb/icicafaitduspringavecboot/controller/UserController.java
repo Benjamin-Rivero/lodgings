@@ -6,6 +6,7 @@ import fr.hb.icicafaitduspringavecboot.repository.FavoriteRepository;
 import fr.hb.icicafaitduspringavecboot.repository.LodgingRepository;
 import fr.hb.icicafaitduspringavecboot.repository.UserRepository;
 import fr.hb.icicafaitduspringavecboot.service.UserService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User createLodging(@RequestBody UserCreationDto userCreationDto){
+    public User createLodging(@Valid @RequestBody UserCreationDto userCreationDto){
         return userService.create(userCreationDto);
     }
 

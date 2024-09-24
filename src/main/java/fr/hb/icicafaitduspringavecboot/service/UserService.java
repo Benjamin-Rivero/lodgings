@@ -1,5 +1,6 @@
 package fr.hb.icicafaitduspringavecboot.service;
 
+import fr.hb.icicafaitduspringavecboot.configuration.PasswordEncoderConfig;
 import fr.hb.icicafaitduspringavecboot.dto.UserCreationDto;
 import fr.hb.icicafaitduspringavecboot.dto.UserUpdateDto;
 import fr.hb.icicafaitduspringavecboot.entity.User;
@@ -16,6 +17,7 @@ import java.util.List;
 public class UserService implements ServiceListInterface<User, String,UserCreationDto, UserUpdateDto> {
 
     private final UserRepository userRepository;
+    private final PasswordEncoderConfig encoder;
 
     public User create(UserCreationDto userCreationDto){
         return userRepository.saveAndFlush(toEntity(userCreationDto));
@@ -26,7 +28,7 @@ public class UserService implements ServiceListInterface<User, String,UserCreati
         user.setEmail(userCreationDto.getEmail());
         user.setFirstName(userCreationDto.getFirstName());
         user.setLastName(userCreationDto.getLastName());
-        user.setPassword(userCreationDto.getPassword());
+        user.setPassword(encoder.passwordEncoder().encode(userCreationDto.getPassword()));
         user.setRole(userCreationDto.getRole());
         user.setBirthDate(userCreationDto.getBirthDate());
         return user;

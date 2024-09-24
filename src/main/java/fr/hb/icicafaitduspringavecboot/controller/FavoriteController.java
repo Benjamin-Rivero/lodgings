@@ -6,6 +6,7 @@ import fr.hb.icicafaitduspringavecboot.entity.FavoriteId;
 import fr.hb.icicafaitduspringavecboot.entity.Lodging;
 import fr.hb.icicafaitduspringavecboot.entity.User;
 import fr.hb.icicafaitduspringavecboot.service.FavoriteService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,7 +21,7 @@ public class FavoriteController {
     private final FavoriteService favoriteService;
 
     @PostMapping("/favorite")
-    public Favorite favorite(@RequestBody FavoriteDto favoriteDto){
+    public Favorite favorite(@Valid @RequestBody FavoriteDto favoriteDto){
         return favoriteService.create(favoriteDto);
     }
 

@@ -2,6 +2,7 @@ package fr.hb.icicafaitduspringavecboot.controller;
 
 import fr.hb.icicafaitduspringavecboot.dto.MediaDto;
 import fr.hb.icicafaitduspringavecboot.entity.Media;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,7 @@ public class MediaController {
     private final MediaService mediaService;
 
     @PostMapping
-    public Media create(@RequestBody MediaDto mediaDto){
+    public Media create(@Valid @RequestBody MediaDto mediaDto){
         return mediaService.create(mediaDto);
     }
 
