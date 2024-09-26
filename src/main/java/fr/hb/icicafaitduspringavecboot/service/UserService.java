@@ -1,12 +1,14 @@
 package fr.hb.icicafaitduspringavecboot.service;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import fr.hb.icicafaitduspringavecboot.configuration.PasswordEncoderConfig;
 import fr.hb.icicafaitduspringavecboot.dto.UserCreationDto;
 import fr.hb.icicafaitduspringavecboot.dto.UserUpdateDto;
 import fr.hb.icicafaitduspringavecboot.entity.User;
+import fr.hb.icicafaitduspringavecboot.exceptions.EntityNotFoundException;
+import fr.hb.icicafaitduspringavecboot.jsonviews.JsonViews;
 import fr.hb.icicafaitduspringavecboot.repository.UserRepository;
 import fr.hb.icicafaitduspringavecboot.service.interfaces.ServiceListInterface;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -54,8 +56,10 @@ public class UserService implements ServiceListInterface<User, String,UserCreati
     }
 
     public User findById(String userId) {
-        return userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+        return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("id",userId,"User"));
     }
+
+
 
     @Override
     public List<User> list() {

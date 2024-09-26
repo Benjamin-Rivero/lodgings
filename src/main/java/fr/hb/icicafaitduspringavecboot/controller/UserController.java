@@ -1,7 +1,9 @@
 package fr.hb.icicafaitduspringavecboot.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import fr.hb.icicafaitduspringavecboot.dto.UserCreationDto;
 import fr.hb.icicafaitduspringavecboot.entity.User;
+import fr.hb.icicafaitduspringavecboot.jsonviews.JsonViews;
 import fr.hb.icicafaitduspringavecboot.repository.FavoriteRepository;
 import fr.hb.icicafaitduspringavecboot.repository.LodgingRepository;
 import fr.hb.icicafaitduspringavecboot.repository.UserRepository;
@@ -23,8 +25,15 @@ public class UserController {
     private final FavoriteRepository favoriteRepository;
 
     @GetMapping
+    @JsonView(JsonViews.UserListView.class)
     public List<User> getAll(){
-        return userRepository.findAll();
+        return userService.list();
+    }
+
+    @GetMapping("/{id}")
+    @JsonView(JsonViews.UserShowView.class)
+    public User show(@PathVariable String id){
+        return userService.findById(id);
     }
 
     @PostMapping
