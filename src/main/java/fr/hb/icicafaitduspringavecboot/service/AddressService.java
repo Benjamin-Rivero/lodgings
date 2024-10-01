@@ -4,20 +4,33 @@ import fr.hb.icicafaitduspringavecboot.dto.AddressDto;
 import fr.hb.icicafaitduspringavecboot.entity.Address;
 import fr.hb.icicafaitduspringavecboot.entity.User;
 import fr.hb.icicafaitduspringavecboot.repository.AddressRepository;
+import fr.hb.icicafaitduspringavecboot.repository.UserRepository;
 import fr.hb.icicafaitduspringavecboot.service.interfaces.ServiceInterface;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.security.Principal;
 
 @AllArgsConstructor
 @Service
 public class AddressService implements ServiceInterface<Address,Long, AddressDto,AddressDto> {
 
     private final AddressRepository addressRepository;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Override
     public Address create(AddressDto object) {
         return addressRepository.saveAndFlush(toEntity(object));
+    }
+
+    public Address createWithUser(AddressDto addressDto, Principal principal){
+        Address address = create(addressDto);
+        User user = userService.findByEmail(principal.getName());
+        user.getAddresses().add(address);
+        userRepository.save(user);
+        return address;
     }
 
     private Address toEntity(AddressDto object) {
@@ -30,7 +43,7 @@ public class AddressService implements ServiceInterface<Address,Long, AddressDto
         address.setLatitude(object.getLatitude());
         address.setLongitude(object.getLongitude());
         address.setMore(object.getMore());
-        address.setBilling(object.getIsBilling());
+        address.setIsBilling(false);
         return address;
     }
 
