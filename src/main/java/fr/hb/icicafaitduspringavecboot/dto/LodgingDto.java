@@ -20,7 +20,9 @@ public class LodgingDto {
 
     private String description;
 
+    private boolean isAccessible;
+
     @NotNull(message = "You have to give an address")
-    private Long addressId;
+    private AddressDto addressDto;
 
 }

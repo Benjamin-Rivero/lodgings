@@ -22,14 +22,8 @@ public class UserCreationDto{
     @NotBlank(message = "The password must have a value")
     private String password;
 
-    @NotBlank(message = "The role must have a value")
-    private String role;
-
     @NotNull(message = "The birth date must be set")
     @Past(message = "The birth date must be in the past")
     private LocalDate birthDate;
-
-    @NotNull(message = "You have to set an address")
-    private AddressDto addressDto;
 
 }

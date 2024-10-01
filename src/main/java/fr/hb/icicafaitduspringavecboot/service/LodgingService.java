@@ -20,16 +20,13 @@ public class LodgingService implements ServiceInterface<Lodging,String,LodgingDt
 
     public Lodging create(LodgingDto lodgingDto){
         Lodging lodging = toEntity(lodgingDto);
-        Address address = addressService.findById(lodging.getAddress().getId());
-        lodgingRepository.saveAndFlush(lodging);
-//        address.setLodging(lodging);
-        addressRepository.saveAndFlush(address);
-        return lodgingRepository.saveAndFlush(lodging);
+        lodging.setSlug("qsQS");
+        return lodgingRepository.save(lodging);
     }
 
     public Lodging toEntity(LodgingDto lodgingDto){
         Lodging lodging = new Lodging();
-        lodging.setAddress(addressService.findById(lodgingDto.getAddressId()));
+        lodging.setAddress(addressService.create(lodgingDto.getAddressDto()));
         lodging.setCapacity(lodgingDto.getCapacity());
         lodging.setDescription(lodgingDto.getDescription());
         lodging.setName(lodgingDto.getName());
@@ -56,4 +53,7 @@ public class LodgingService implements ServiceInterface<Lodging,String,LodgingDt
     }
 
 
+    public Lodging getOneRandom() {
+        return lodgingRepository.getOneRandom();
+    }
 }

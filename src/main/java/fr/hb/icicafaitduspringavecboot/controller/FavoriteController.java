@@ -1,6 +1,5 @@
 package fr.hb.icicafaitduspringavecboot.controller;
 
-import fr.hb.icicafaitduspringavecboot.dto.FavoriteDto;
 import fr.hb.icicafaitduspringavecboot.entity.Favorite;
 import fr.hb.icicafaitduspringavecboot.entity.FavoriteId;
 import fr.hb.icicafaitduspringavecboot.entity.Lodging;
@@ -20,9 +19,9 @@ public class FavoriteController {
 
     private final FavoriteService favoriteService;
 
-    @PostMapping("/favorite")
-    public Favorite favorite(@Valid @RequestBody FavoriteDto favoriteDto){
-        return favoriteService.create(favoriteDto);
+    @PostMapping
+    public boolean favorite(@RequestBody FavoriteId favoriteId){
+        return favoriteService.createOrDelete(favoriteId);
     }
 
 }

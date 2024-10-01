@@ -1,12 +1,10 @@
 package fr.hb.icicafaitduspringavecboot.service;
 
-import fr.hb.icicafaitduspringavecboot.dto.FavoriteDto;
 import fr.hb.icicafaitduspringavecboot.entity.Favorite;
 import fr.hb.icicafaitduspringavecboot.entity.FavoriteId;
 import fr.hb.icicafaitduspringavecboot.entity.Lodging;
 import fr.hb.icicafaitduspringavecboot.entity.User;
 import fr.hb.icicafaitduspringavecboot.repository.FavoriteRepository;
-import fr.hb.icicafaitduspringavecboot.service.interfaces.ServiceInterface;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,15 +17,22 @@ public class FavoriteService {
     private final LodgingService lodgingService;
     private final UserService userService;
 
-    public Favorite create(FavoriteDto favoriteDto){
-        return favoriteRepository.saveAndFlush(toEntity(favoriteDto));
-    }
+    public boolean createOrDelete(FavoriteId favoriteId){
+        if(favoriteRepository.existsById(favoriteId)){
+            favoriteRepository.deleteById(favoriteId);
+            return !favoriteRepository.existsById(favoriteId);
+		} else {
+            favoriteRepository.saveAndFlush(toEntity(favoriteId));
+            return true;
+		}
 
-    private Favorite toEntity(FavoriteDto favoriteDto) {
+	}
+
+    private Favorite toEntity(FavoriteId favoriteId) {
         Favorite favorite = new Favorite();
-        Lodging lodging = lodgingService.findById(favoriteDto.getIds().getLodgingId());
-        User user = userService.findById(favoriteDto.getIds().getUserId());
-        favorite.setId(favoriteDto.getIds());
+        Lodging lodging = lodgingService.findById(favoriteId.getLodgingId());
+        User user = userService.findById(favoriteId.getUserId());
+        favorite.setId(favoriteId);
         favorite.setLodging(lodging);
         favorite.setUser(user);
         return favorite;
