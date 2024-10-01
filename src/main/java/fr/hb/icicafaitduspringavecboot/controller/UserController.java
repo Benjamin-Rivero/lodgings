@@ -24,8 +24,9 @@ public class UserController {
     }
 
     @GetMapping("/validate")
-    public User validate(@RequestParam(name = "token") String token){
-        return userService.validate(token);
+    public String validate(@RequestParam(name = "token") String token){
+        if(userService.validate(token)) return "Account activated";
+        else return "Problem while activating account";
     }
 
 

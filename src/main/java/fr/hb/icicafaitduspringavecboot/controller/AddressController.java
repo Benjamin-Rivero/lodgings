@@ -4,6 +4,7 @@ import fr.hb.icicafaitduspringavecboot.dto.AddressDto;
 import fr.hb.icicafaitduspringavecboot.entity.Address;
 import fr.hb.icicafaitduspringavecboot.repository.AddressRepository;
 import fr.hb.icicafaitduspringavecboot.service.AddressService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class AddressController {
     private final AddressService addressService;
 
     @PostMapping
-    public Address create(@RequestBody AddressDto addressDto, Principal principal){
+    public Address create(@Valid @RequestBody AddressDto addressDto, Principal principal){
         if(principal!=null){
             return addressService.createWithUser(addressDto,principal);
         }

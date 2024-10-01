@@ -69,7 +69,7 @@ public class InitDataLoaderConfig implements CommandLineRunner {
             userCreationDto.setEmail(String.format("%s.%s@gmail.com",userCreationDto.getFirstName(),userCreationDto.getLastName()));
             userCreationDto.setPassword(passwordEncoder.encode("12345"));
             userCreationDto.setBirthDate(LocalDate.ofInstant(faker.date().birthday().toInstant(), ZoneId.systemDefault()));
-            User user = userService.create(userCreationDto);
+            User user = userService.createInit(userCreationDto);
             Address address = addressService.create(createRandomAddress(faker));
             user.getAddresses().add(address);
             userRepository.save(user);

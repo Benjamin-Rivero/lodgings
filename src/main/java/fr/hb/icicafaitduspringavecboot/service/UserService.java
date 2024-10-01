@@ -40,6 +40,10 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    public User createInit(UserCreationDto userCreationDto){
+        return userRepository.save(toEntity(userCreationDto));
+    }
+
     public User toEntity(UserCreationDto userCreationDto){
         User user = new User();
         user.setEmail(userCreationDto.getEmail());
@@ -107,7 +111,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findByActivationToken(activationToken);
     }
 
-	public User validate(String activationToken) {
+	public boolean validate(String activationToken) {
         User user = findByActivationToken(activationToken)
                 .orElseThrow(() -> new AlreadyActiveException("Ce code d'activation n'existe pas !"));
 
@@ -117,7 +121,8 @@ public class UserService implements UserDetailsService {
         }
         user.setActivationToken(null);
         user.setActivationTokenSentAt(null);
-        return userRepository.saveAndFlush(user);
+        userRepository.saveAndFlush(user);
+        return true;
 	}
 
     public User findByEmail(String email) {
