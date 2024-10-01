@@ -3,6 +3,7 @@ package fr.hb.icicafaitduspringavecboot.configuration;
 import com.github.javafaker.Faker;
 import fr.hb.icicafaitduspringavecboot.entity.*;
 import fr.hb.icicafaitduspringavecboot.repository.*;
+import fr.hb.icicafaitduspringavecboot.service.RoomService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,7 @@ public class InitDataLoaderConfig implements CommandLineRunner {
     private final FavoriteRepository favoriteRepository;
     private final BookingRepository bookingRepository;
     private final ReviewRepository reviewRepository;
+    private final RoomService roomService;
 
 
     @Override
@@ -114,6 +116,8 @@ public class InitDataLoaderConfig implements CommandLineRunner {
             Address address = createRandomAddress(faker);
             addressRepository.save(address);
             lodging.setAddress(address);
+            lodgingRepository.save(lodging);
+            lodging.getRooms().add(roomService.getOneRandom());
             lodgingRepository.save(lodging);
         }
         lodgingRepository.flush();

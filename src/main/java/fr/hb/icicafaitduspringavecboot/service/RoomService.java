@@ -51,4 +51,8 @@ public class RoomService implements ServiceListInterface<Room,Long, RoomDto,Room
     public List<Room> list() {
         return roomRepository.findAll();
     }
+
+    public Room getOneRandom(){
+        return roomRepository.getOneRandom();
+    }
 }

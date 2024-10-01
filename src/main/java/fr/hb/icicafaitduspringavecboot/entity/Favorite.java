@@ -26,13 +26,13 @@ public class Favorite implements CreatedAtInterface {
 
     @MapsId("userId")
     @ManyToOne
-    @JoinColumn(name = "user_id")
+//    @JoinColumn(name = "user_id")
     private User user;
 
 
     @MapsId("lodgingId")
     @ManyToOne
-    @JoinColumn(name = "lodging_id")
+//    @JoinColumn(name = "lodging_id")
     private Lodging lodging;
 
     /*@Id
