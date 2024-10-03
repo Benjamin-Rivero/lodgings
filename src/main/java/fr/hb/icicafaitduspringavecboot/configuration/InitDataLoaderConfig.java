@@ -66,8 +66,8 @@ public class InitDataLoaderConfig implements CommandLineRunner {
             UserCreationDto userCreationDto = new UserCreationDto();
             userCreationDto.setFirstName(faker.name().firstName());
             userCreationDto.setLastName(faker.name().lastName());
-            userCreationDto.setEmail(String.format("%s.%s@gmail.com",userCreationDto.getFirstName(),userCreationDto.getLastName()));
-            userCreationDto.setPassword(passwordEncoder.encode("12345"));
+            userCreationDto.setEmail(String.format("%s.%s@gmail.com",userCreationDto.getFirstName().toLowerCase(),userCreationDto.getLastName().toLowerCase()));
+            userCreationDto.setPassword("12345");
             userCreationDto.setBirthDate(LocalDate.ofInstant(faker.date().birthday().toInstant(), ZoneId.systemDefault()));
             User user = userService.createInit(userCreationDto);
             Address address = addressService.create(createRandomAddress(faker));
@@ -81,7 +81,7 @@ public class InitDataLoaderConfig implements CommandLineRunner {
         Faker faker = new Faker(Locale.of("fr"));
         List<String> roomTypes = List.of("Kitchen","Bathroom","Master Bedroom","Living Room","Attic","Basement","Garage","Jacuzzi","Pool","1 Bed Bedroom","2 Bed Bedroom");
 
-        if(roomRepository.count() != roomTypes.size()) {
+        if(roomRepository.count() <= roomTypes.size()) {
             for (String roomType : roomTypes) {
                 RoomDto roomDto = new RoomDto();
                 roomDto.setType(roomType);
@@ -115,7 +115,7 @@ public class InitDataLoaderConfig implements CommandLineRunner {
             lodgingDto.setName("Gite "+i);
             lodgingDto.setCapacity((int)Math.ceil(Math.random()*8));
             lodgingDto.setNightPrice((int)Math.ceil(Math.random()*100));
-            lodgingDto.setDescription(String.valueOf(faker.lorem().words(45)));
+            lodgingDto.setDescription(String.valueOf(faker.lorem().paragraph(2)));
             lodgingDto.setAccessible(faker.bool().bool());
             lodgingDto.setAddressDto(createRandomAddress(faker));
             Lodging lodging = lodgingService.create(lodgingDto);
@@ -140,9 +140,9 @@ public class InitDataLoaderConfig implements CommandLineRunner {
         addressDto.setZipCode(faker.address().zipCode());
         addressDto.setCity(faker.address().city());
         addressDto.setCountry("France");
-        addressDto.setLongitude((float) ((Math.random() * (8.135000 - 2.315800)) + 2.315800));
-        addressDto.setLatitude((float) ((Math.random() * (51.052100 - 42.195800)) + 42.195800));
-        addressDto.setMore(String.valueOf(faker.lorem().words(10)));
+        addressDto.setLongitude(((Float)(float) ((Math.random() * (8.135000 - 2.315800)) + 2.315800)).toString());
+        addressDto.setLatitude(((Float)(float) ((Math.random() * (51.052100 - 42.195800)) + 42.195800)).toString());
+        addressDto.setMore(String.valueOf(faker.lorem().paragraph(1)));
         return addressDto;
     }
 
@@ -175,6 +175,8 @@ public class InitDataLoaderConfig implements CommandLineRunner {
             bookingDto.setQuantity((int)Math.ceil(Math.random()*6));
             bookingDto.setLodgingId(lodgingService.getOneRandom().getId());
             Booking booking = bookingService.create(bookingDto);
+            booking.setUser(userService.getOneRandom());
+            bookingRepository.save(booking);
         }
         bookingRepository.flush();
     }
@@ -187,7 +189,7 @@ public class InitDataLoaderConfig implements CommandLineRunner {
         for (int i = 0; i < NB_REVIEW; i++) {
             Review review = new Review();
             review.setCreatedAt(LocalDateTime.now());
-            review.setContent(String.valueOf(faker.lorem().words(12)));
+            review.setContent(String.valueOf(faker.lorem().paragraph(2)));
             review.setRating((float)Math.random()*5);
             review.setUser(userRepository.getOneRandom());
             review.setLodging(lodgingRepository.getOneRandom());

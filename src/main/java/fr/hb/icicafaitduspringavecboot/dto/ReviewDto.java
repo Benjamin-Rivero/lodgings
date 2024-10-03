@@ -18,9 +18,6 @@ public class ReviewDto {
     private float rating;
 
     @NotBlank
-    private String userId;
-
-    @NotBlank
     private String lodgingId;
 
 }

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import fr.hb.icicafaitduspringavecboot.entity.interfaces.CreatedAtInterface;
 import fr.hb.icicafaitduspringavecboot.entity.interfaces.SluggerInterface;
 import fr.hb.icicafaitduspringavecboot.jsonviews.JsonViewUser;
-import fr.hb.icicafaitduspringavecboot.jsonviews.JsonViews;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,11 +25,9 @@ public class User implements CreatedAtInterface, SluggerInterface, UserDetails {
     @JsonView(JsonViewUser.Id.class)
     private String id;
 
-    @Column(nullable = false)
     @JsonView(JsonViewUser.FirstName.class)
     private String firstName;
 
-    @Column(nullable = false)
     @JsonView(JsonViewUser.LastName.class)
     private String lastName;
 
@@ -38,7 +35,6 @@ public class User implements CreatedAtInterface, SluggerInterface, UserDetails {
     @JsonView(JsonViewUser.Email.class)
     private String email;
 
-    @Column(nullable = false)
     @JsonView(JsonViewUser.Password.class)
     private String password;
 
@@ -46,7 +42,6 @@ public class User implements CreatedAtInterface, SluggerInterface, UserDetails {
     @JsonView(JsonViewUser.Roles.class)
     private String roles;
 
-    @Column(nullable = false)
     @JsonView(JsonViewUser.Birthdate.class)
     private LocalDate birthDate;
 

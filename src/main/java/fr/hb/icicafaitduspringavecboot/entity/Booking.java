@@ -48,5 +48,4 @@ public class Booking implements CreatedAtInterface {
     private int quantity;
 
 
-
 }

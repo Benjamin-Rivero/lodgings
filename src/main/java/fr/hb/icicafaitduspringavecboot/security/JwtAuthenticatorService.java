@@ -30,6 +30,7 @@ public class JwtAuthenticatorService {
             String token = jwtService.generateToken(userLoginDto.getUsername());
             return ResponseEntity.ok(new JwtResponse(token));
         } catch (AuthenticationException ex) {
+            ex.printStackTrace();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }

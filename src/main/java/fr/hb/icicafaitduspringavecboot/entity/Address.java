@@ -36,11 +36,11 @@ public class Address {
 
     @Column(nullable = false)
     @JsonView(JsonViewAddress.Longitude.class)
-    private float longitude;
+    private String longitude;
 
     @Column(nullable = false)
     @JsonView(JsonViewAddress.Latitude.class)
-    private float latitude;
+    private String latitude;
 
     @JsonView(JsonViewAddress.More.class)
     private String more;

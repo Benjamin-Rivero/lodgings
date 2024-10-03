@@ -1,9 +1,11 @@
 package fr.hb.icicafaitduspringavecboot.controller.security;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import fr.hb.icicafaitduspringavecboot.custom_response.JwtResponse;
 import fr.hb.icicafaitduspringavecboot.dto.UserCreationDto;
 import fr.hb.icicafaitduspringavecboot.dto.security.UserLoginDto;
 import fr.hb.icicafaitduspringavecboot.entity.User;
+import fr.hb.icicafaitduspringavecboot.jsonviews.JsonViewUser;
 import fr.hb.icicafaitduspringavecboot.security.JwtAuthenticatorService;
 import fr.hb.icicafaitduspringavecboot.service.UserService;
 import jakarta.validation.Valid;
@@ -23,6 +25,7 @@ public class SecurityController {
 	private final JwtAuthenticatorService jwtAuthenticatorService;
 
 	@PostMapping("/register")
+	@JsonView(JsonViewUser.UserShowView.class)
 	public User register(@Valid @RequestBody UserCreationDto userCreationDto){
 		return userService.create(userCreationDto);
 	}

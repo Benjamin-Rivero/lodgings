@@ -10,11 +10,10 @@ import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
-public class MediaService implements ServiceInterface<Media,Long, MediaDto,MediaDto> {
+public class MediaService{
 
     private final MediaRepository mediaRepository;
 
-    @Override
     public Media create(MediaDto object) {
         return mediaRepository.saveAndFlush(toEntity(object));
     }
@@ -27,7 +26,6 @@ public class MediaService implements ServiceInterface<Media,Long, MediaDto,Media
         return media;
     }
 
-    @Override
     public Media update(MediaDto object, Long id) {
         Media media = toEntity(object);
         media.setId(id);
@@ -35,12 +33,10 @@ public class MediaService implements ServiceInterface<Media,Long, MediaDto,Media
         return media;
     }
 
-    @Override
     public void delete(Media object) {
         if(object!=null) mediaRepository.delete(object);
     }
 
-    @Override
     public Media findById(Long id) {
         return mediaRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }

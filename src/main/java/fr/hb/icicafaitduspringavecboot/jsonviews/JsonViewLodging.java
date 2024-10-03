@@ -2,7 +2,13 @@ package fr.hb.icicafaitduspringavecboot.jsonviews;
 
 public class JsonViewLodging {
 
-	public interface LodgingMinimalView extends Name,NightPrice,Capacity {}
+	public interface LodgingMinimalView extends Name,NightPrice,Capacity,Slug {}
+
+	public interface LodgingShowView extends LodgingMinimalView, Description, IsAccessible,
+			Medias,JsonViewMedia.Extension,JsonViewMedia.Path,
+			Rooms,JsonViewRoom.Type,
+			Reviews, JsonViewReview.ReviewMinimalView,
+			Address, JsonViewAddress.AddressMinimalView {}
 
 	public interface Bookings {
 	}

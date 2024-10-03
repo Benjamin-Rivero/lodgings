@@ -3,8 +3,6 @@ package fr.hb.icicafaitduspringavecboot.service;
 import fr.hb.icicafaitduspringavecboot.dto.RoomDto;
 import fr.hb.icicafaitduspringavecboot.entity.Room;
 import fr.hb.icicafaitduspringavecboot.repository.RoomRepository;
-import fr.hb.icicafaitduspringavecboot.service.interfaces.ServiceInterface;
-import fr.hb.icicafaitduspringavecboot.service.interfaces.ServiceListInterface;
 import fr.hb.icicafaitduspringavecboot.utils.Slugger;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -38,7 +36,4 @@ public class RoomService{
         return roomRepository.findAll();
     }
 
-    public Room getOneRandom(){
-        return roomRepository.getOneRandom();
-    }
 }

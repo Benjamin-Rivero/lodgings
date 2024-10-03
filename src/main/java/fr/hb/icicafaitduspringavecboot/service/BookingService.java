@@ -51,7 +51,6 @@ public class BookingService implements ServiceListInterface<Booking,String,Booki
         booking.setNumber(StringUtil.generateRandomString(8));
         booking.setQuantity(object.getQuantity());
         booking.setLodging(lodgingService.findById(object.getLodgingId()));
-        if(object.getUserId()!=null) booking.setUser(userService.findById(object.getUserId()));
         return booking;
     }
 

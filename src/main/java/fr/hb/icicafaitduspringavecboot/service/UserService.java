@@ -1,5 +1,7 @@
 package fr.hb.icicafaitduspringavecboot.service;
 
+import fr.hb.icicafaitduspringavecboot.dto.AddressDto;
+import fr.hb.icicafaitduspringavecboot.entity.Address;
 import fr.hb.icicafaitduspringavecboot.exceptions.AlreadyActiveException;
 import fr.hb.icicafaitduspringavecboot.exceptions.ExpiredCodeException;
 import fr.hb.icicafaitduspringavecboot.security.PasswordEncoderConfig;
@@ -11,11 +13,13 @@ import fr.hb.icicafaitduspringavecboot.repository.UserRepository;
 import fr.hb.icicafaitduspringavecboot.service.interfaces.ServiceListInterface;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
+import org.json.JSONArray;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -29,6 +33,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoderConfig encoder;
     private final EmailService emailService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public User create(UserCreationDto userCreationDto){
         User user = userRepository.save(toEntity(userCreationDto));
@@ -41,7 +46,10 @@ public class UserService implements UserDetailsService {
     }
 
     public User createInit(UserCreationDto userCreationDto){
-        return userRepository.save(toEntity(userCreationDto));
+        User user = toEntity(userCreationDto);
+        user.setActivationToken(null);
+        user.setActivationTokenSentAt(null);
+        return userRepository.save(user);
     }
 
     public User toEntity(UserCreationDto userCreationDto){
@@ -62,14 +70,28 @@ public class UserService implements UserDetailsService {
         User user = findById(id);
         user.setFirstName(object.getFirstName());
         user.setLastName(object.getLastName());
-        user.setPassword(object.getPassword());
+        user.setPassword(passwordEncoder.encode(object.getPassword()));
         user.setId(id);
         userRepository.saveAndFlush(user);
         return user;
     }
 
-    public void delete(User object) {
-        if(object!=null) userRepository.delete(object);
+    public boolean delete(String id) {
+        try {
+            User user = findById(id);
+            user.setPhone(null);
+            user.setBirthDate(null);
+            user.setPhoto(null);
+            user.setLastName(null);
+            user.setFirstName(null);
+            user.setEmail("Utilisateur supprimé");
+            user.setSlug(null);
+            userRepository.saveAndFlush(user);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public User findById(String userId) {
@@ -94,6 +116,7 @@ public class UserService implements UserDetailsService {
     private List<GrantedAuthority> userGrantedAuthority(String role) {
         List<GrantedAuthority> authorities = new ArrayList<>();
         List<String> roles = Collections.singletonList(role);
+//        JSONArray roles = new JSONArray(role);
         roles.forEach(r -> {
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
             if (r.contains("ADMIN")) {

@@ -3,7 +3,6 @@ package fr.hb.icicafaitduspringavecboot.entity;
 import com.fasterxml.jackson.annotation.JsonView;
 import fr.hb.icicafaitduspringavecboot.entity.interfaces.CreatedAtInterface;
 import fr.hb.icicafaitduspringavecboot.jsonviews.JsonViewReview;
-import fr.hb.icicafaitduspringavecboot.jsonviews.JsonViews;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,9 +21,8 @@ public class Review implements CreatedAtInterface {
     @JsonView(JsonViewReview.Content.class)
     private String content;
 
-    @Column(nullable = false)
     @JsonView(JsonViewReview.Rating.class)
-    private float rating;
+    private Float rating;
 
     @Column(nullable = false)
     @JsonView(JsonViewReview.CreatedAt.class)

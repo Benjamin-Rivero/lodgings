@@ -9,26 +9,24 @@ import lombok.Setter;
 @Setter
 public class AddressDto {
 
-    @NotBlank(message = "The street must have a value")
+    @NotBlank(message = "The street must be set")
     private String street;
 
-    @NotBlank(message = "The street number must have a value")
+    @NotBlank(message = "The street number must be set")
     private String number;
 
-    @NotBlank(message = "The zipCode must have a value")
+    @NotBlank(message = "The zipCode must be set")
     private String zipCode;
 
-    @NotBlank(message = "The city must have a value")
+    @NotBlank(message = "The city must be set")
     private String city;
 
-    @NotBlank(message = "The country must have a value")
+    @NotBlank(message = "The country must be set")
     private String country;
 
-    @Positive(message = "The longitude must be positive")
-    private Float longitude;
+    private String longitude;
 
-    @Positive(message = "The latitude must be positive")
-    private Float latitude;
+    private String latitude;
 
     private String more;
 

@@ -40,8 +40,8 @@ public class AddressService implements ServiceInterface<Address,Long, AddressDto
         address.setCity(object.getCity());
         address.setZipCode(object.getZipCode());
         address.setCountry(object.getCountry());
-        address.setLatitude(object.getLatitude());
-        address.setLongitude(object.getLongitude());
+        address.setLatitude(object.getLatitude().toString());
+        address.setLongitude(object.getLongitude().toString());
         address.setMore(object.getMore());
         address.setIsBilling(false);
         return address;

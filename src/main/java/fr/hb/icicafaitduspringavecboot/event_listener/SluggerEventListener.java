@@ -34,7 +34,8 @@ public class SluggerEventListener implements PreInsertEventListener,
             if (si.getField() == null) {
                 return true;
             }
-            si.setSlug(slugger.slugify(si.getField()));
+            if(si.getField().equals("null-null")) si.setSlug(null);
+            else si.setSlug(slugger.slugify(si.getField()));
         }
         return false;
     }

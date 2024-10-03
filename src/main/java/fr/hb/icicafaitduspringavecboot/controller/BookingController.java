@@ -28,4 +28,6 @@ public class BookingController {
         return bookingService.createBooking(bookingDto,principal);
     }
 
+
+
 }

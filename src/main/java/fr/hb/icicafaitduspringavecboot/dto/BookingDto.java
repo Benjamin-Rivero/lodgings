@@ -12,8 +12,6 @@ import java.time.LocalDateTime;
 @Setter
 public class BookingDto {
 
-    private String userId;
-
     @NotBlank(message = "You have to set the lodging id")
     private String lodgingId;
 
