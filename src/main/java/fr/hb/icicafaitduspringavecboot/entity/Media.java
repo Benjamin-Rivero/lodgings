@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(indexes = {
         @Index(columnList = "path")
 })
