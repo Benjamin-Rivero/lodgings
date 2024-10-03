@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/api/user")
 @AllArgsConstructor
@@ -20,6 +22,12 @@ public class UserController {
     @JsonView(JsonViewUser.UserShowView.class)
     public User show(@PathVariable String id){
         return userService.findById(id);
+    }
+
+    @GetMapping("/profile")
+    @JsonView(JsonViewUser.UserShowView.class)
+    public User profile(Principal principal){
+        return userService.findByEmail(principal.getName());
     }
 
     @PutMapping("/{id}")

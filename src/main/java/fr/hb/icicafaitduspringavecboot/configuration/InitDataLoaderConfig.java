@@ -1,11 +1,12 @@
 package fr.hb.icicafaitduspringavecboot.configuration;
 
-import com.github.javafaker.Faker;
+
 import fr.hb.icicafaitduspringavecboot.dto.*;
 import fr.hb.icicafaitduspringavecboot.entity.*;
 import fr.hb.icicafaitduspringavecboot.repository.*;
 import fr.hb.icicafaitduspringavecboot.service.*;
 import lombok.AllArgsConstructor;
+import net.datafaker.Faker;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -14,10 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -27,10 +25,10 @@ public class InitDataLoaderConfig implements CommandLineRunner {
     private static final int NB_BOOKING = 50;
     private static final int NB_REVIEW = 100;
     private final int NB_FAVORITE = 25;
-    private final int NB_USER = 250;
+    private final int NB_USER = 125;
 //    private final int NB_ROOM = 25;
 //    private final int NB_ADDRESS = 50;
-    private final int NB_LODGING = 100;
+    private final int NB_LODGING = 50;
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
     private final AddressRepository addressRepository;
@@ -68,7 +66,7 @@ public class InitDataLoaderConfig implements CommandLineRunner {
             userCreationDto.setLastName(faker.name().lastName());
             userCreationDto.setEmail(String.format("%s.%s@gmail.com",userCreationDto.getFirstName().toLowerCase(),userCreationDto.getLastName().toLowerCase()));
             userCreationDto.setPassword("12345");
-            userCreationDto.setBirthDate(LocalDate.ofInstant(faker.date().birthday().toInstant(), ZoneId.systemDefault()));
+            userCreationDto.setBirthDate(faker.timeAndDate().birthday());
             User user = userService.createInit(userCreationDto);
             Address address = addressService.create(createRandomAddress(faker));
             user.getAddresses().add(address);
@@ -78,10 +76,9 @@ public class InitDataLoaderConfig implements CommandLineRunner {
     }
 
     private void createRooms(){
-        Faker faker = new Faker(Locale.of("fr"));
         List<String> roomTypes = List.of("Kitchen","Bathroom","Master Bedroom","Living Room","Attic","Basement","Garage","Jacuzzi","Pool","1 Bed Bedroom","2 Bed Bedroom");
 
-        if(roomRepository.count() <= roomTypes.size()) {
+        if(roomRepository.count() < roomTypes.size()) {
             for (String roomType : roomTypes) {
                 RoomDto roomDto = new RoomDto();
                 roomDto.setType(roomType);
@@ -107,12 +104,18 @@ public class InitDataLoaderConfig implements CommandLineRunner {
     private void createLodgings(){
         Random random = new Random();
         Faker faker = new Faker(Locale.of("fr"));
+        List<String> alreadyAppeared = new ArrayList<>();
 
         if(lodgingRepository.count() >= NB_LODGING) return;
 
         for (int i = 0; i < NB_LODGING; i++) {
             LodgingDto lodgingDto = new LodgingDto();
-            lodgingDto.setName("Gite "+i);
+            String name;
+            do {
+                name = genererNomGite();
+            } while (alreadyAppeared.contains(name));
+            alreadyAppeared.add(name);
+            lodgingDto.setName(name);
             lodgingDto.setCapacity((int)Math.ceil(Math.random()*8));
             lodgingDto.setNightPrice((int)Math.ceil(Math.random()*100));
             lodgingDto.setDescription(String.valueOf(faker.lorem().paragraph(2)));
@@ -170,7 +173,7 @@ public class InitDataLoaderConfig implements CommandLineRunner {
 
         for (int i = 0; i < NB_BOOKING ; i++) {
             BookingDto bookingDto = new BookingDto();
-            LocalDateTime started = LocalDateTime.ofInstant(faker.date().future(100, TimeUnit.DAYS).toInstant(),ZoneId.systemDefault());
+            LocalDateTime started = LocalDateTime.ofInstant(faker.timeAndDate().future(100, TimeUnit.DAYS),ZoneId.systemDefault());
             bookingDto.setStartedAt(started);
             bookingDto.setQuantity((int)Math.ceil(Math.random()*6));
             bookingDto.setLodgingId(lodgingService.getOneRandom().getId());
@@ -189,7 +192,7 @@ public class InitDataLoaderConfig implements CommandLineRunner {
         for (int i = 0; i < NB_REVIEW; i++) {
             Review review = new Review();
             review.setCreatedAt(LocalDateTime.now());
-            review.setContent(String.valueOf(faker.lorem().paragraph(2)));
+            review.setContent(faker.yoda().quote());
             review.setRating((float)Math.random()*5);
             review.setUser(userRepository.getOneRandom());
             review.setLodging(lodgingRepository.getOneRandom());
@@ -197,5 +200,42 @@ public class InitDataLoaderConfig implements CommandLineRunner {
         }
         reviewRepository.flush();
     }
+
+    // Liste élargie des adjectifs
+    private static final String[] adjectifs = {
+            "Chaleureux", "Paisible", "Enchanteur", "Rustique", "Charmant", "Tranquille",
+            "Serene", "Cosy", "Élégant", "Authentique", "Vibrant", "Verdoyant",
+            "Serein", "Douillet", "Pittoresque", "Magique", "Radieux", "Convivial",
+            "Spacieux", "Lumineux", "Sublime", "Agréable", "Apaisant", "Raffiné"
+    };
+
+    // Liste élargie des noms
+    private static final String[] noms = {
+            "Refuge", "Havre", "Nid", "Écrin", "Domaine", "Manoir",
+            "Chalet", "Villa", "Gîte", "Cabane", "Ferme", "Château",
+            "Résidence", "Logis", "Moulin", "Bastide", "Auberge", "Pavillon",
+            "Retraite", "Mas", "Cottage", "Lodge", "Foyer", "Tour"
+    };
+
+    // Liste élargie des lieux
+    private static final String[] lieux = {
+            "des Montagnes", "de la Forêt", "des Collines", "de la Rivière", "du Lac",
+            "du Jardin", "des Pins", "du Verger", "du Vignoble", "des Près",
+            "du Soleil", "du Marais", "des Falaises", "des Cascades", "de la Plage",
+            "du Bois", "du Rocher", "de la Vallée", "de la Clairière", "des Fleurs",
+            "des Champs", "du Sentier", "des Étoiles", "de la Mer"
+    };
+
+    // Méthode pour générer un nom aléatoire
+    public static String genererNomGite() {
+        Random random = new Random();
+        String adjectif = adjectifs[random.nextInt(adjectifs.length)];
+        String nom = noms[random.nextInt(noms.length)];
+        String lieu = lieux[random.nextInt(lieux.length)];
+
+        return adjectif + " " + nom + " " + lieu;
+    }
+
+
 
 }

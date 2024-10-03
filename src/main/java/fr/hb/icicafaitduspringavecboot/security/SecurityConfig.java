@@ -49,6 +49,7 @@ public class SecurityConfig {
 								.requestMatchers(
 										antMatcher(HttpMethod.POST, "/api/favorite"),
 										antMatcher(HttpMethod.PUT, "/api/user/**"),
+										antMatcher(HttpMethod.GET, "/api/user/**"),
 										antMatcher(HttpMethod.DELETE, "/api/user/**"),
 										antMatcher("/api/favorite/**"),
 										antMatcher(HttpMethod.POST, "/api/address"),

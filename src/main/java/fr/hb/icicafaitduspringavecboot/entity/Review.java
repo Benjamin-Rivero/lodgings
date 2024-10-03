@@ -17,7 +17,7 @@ public class Review implements CreatedAtInterface {
     @JsonView(JsonViewReview.Id.class)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false,columnDefinition = "TEXT")
     @JsonView(JsonViewReview.Content.class)
     private String content;
 

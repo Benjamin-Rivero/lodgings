@@ -22,12 +22,14 @@ public class EmailService {
 	public void sendVerificationEmail(User user) throws MessagingException, UnsupportedEncodingException {
 		String toAddress = user.getEmail();
 		String fromAddress = env.getProperty("spring.mail.username");
-		String subject = "Please verify your registration";
-		String content = "Dear [[name]],<br>"
-				+ "Please click the link below to verify your registration:<br>"
-				+ "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
-				+ "Thank you,<br>"
-				+ "CDA R4.";
+		String subject = "Veuillez activer votre compte";
+		String content = "Cher [[name]],<br>"
+				+ "Veuillez cliquer sur le lien ci dessous pour activer votre compte<br>"
+				+ "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3><br>"
+				+ "Ou coller ce lien dans votre navigateur<br>"
+				+ "[[URL]]<br>"
+				+ "Merci,<br>"
+				+ "Air-ish BNB.";
 
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -36,7 +38,6 @@ public class EmailService {
 		String verifyURL = "http://localhost:8080/api/user" + "/validate?token=" + user.getActivationToken();
 
 		content = content.replace("[[URL]]", verifyURL);
-		System.out.println(content);
 
 		helper.setTo(toAddress);
 		helper.setFrom(fromAddress);
