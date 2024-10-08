@@ -31,7 +31,7 @@ public class SecurityController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<JwtResponse> login(@RequestBody UserLoginDto userLoginDto){
+	public ResponseEntity<JwtResponse> login(@Valid @RequestBody UserLoginDto userLoginDto){
 		return jwtAuthenticatorService.authenticate(userLoginDto);
 	}
 

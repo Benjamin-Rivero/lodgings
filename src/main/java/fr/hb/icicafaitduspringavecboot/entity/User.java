@@ -31,7 +31,7 @@ public class User implements CreatedAtInterface, SluggerInterface, UserDetails {
     @JsonView(JsonViewUser.LastName.class)
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(unique = true)
     @JsonView(JsonViewUser.Email.class)
     private String email;
 

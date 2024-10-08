@@ -38,7 +38,7 @@ public class SecurityConfig {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(auth ->
 						auth
-								.requestMatchers(HttpMethod.POST, "/api/login", "/api/register").permitAll()
+								.requestMatchers( "/api/login", "/api/register").permitAll()
 								.requestMatchers(
 										antMatcher("/v3/api-docs/**"),
 										antMatcher("/swagger-ui/**"),
@@ -47,22 +47,17 @@ public class SecurityConfig {
 										antMatcher(HttpMethod.GET, "/api/lodging/**")
 								).permitAll()
 								.requestMatchers(
-										antMatcher(HttpMethod.POST, "/api/favorite"),
-										antMatcher(HttpMethod.PUT, "/api/user/**"),
-										antMatcher(HttpMethod.GET, "/api/user/**"),
-										antMatcher(HttpMethod.DELETE, "/api/user/**"),
+										antMatcher( "/api/favorite"),
+										antMatcher("/api/user/**"),
 										antMatcher("/api/favorite/**"),
-										antMatcher(HttpMethod.POST, "/api/address"),
-										antMatcher(HttpMethod.POST, "/api/booking"),
-										antMatcher(HttpMethod.POST, "/api/review"),
+										antMatcher("/api/address"),
+										antMatcher( "/api/booking"),
+										antMatcher( "/api/review"),
 										antMatcher( "/api/review/**")
 								).authenticated()
 								.requestMatchers(
 										antMatcher(HttpMethod.DELETE, "/api/**"),
-										antMatcher(HttpMethod.POST, "/api/lodging"),
-										antMatcher(HttpMethod.POST, "/api/lodging/**"),
-										antMatcher(HttpMethod.POST, "/api/media"),
-										antMatcher(HttpMethod.POST, "/api/room")
+										antMatcher(HttpMethod.POST,"/api/admin/**")
 								).hasAnyAuthority("ROLE_ADMIN")
 								.requestMatchers(antMatcher("/api/**"))
 								.hasAnyAuthority("ROLE_ADMIN")

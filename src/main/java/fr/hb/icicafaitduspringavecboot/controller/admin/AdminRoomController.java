@@ -1,4 +1,4 @@
-package fr.hb.icicafaitduspringavecboot.controller;
+package fr.hb.icicafaitduspringavecboot.controller.admin;
 
 import fr.hb.icicafaitduspringavecboot.dto.RoomDto;
 import fr.hb.icicafaitduspringavecboot.entity.Room;
@@ -13,16 +13,15 @@ import fr.hb.icicafaitduspringavecboot.service.RoomService;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/room")
-public class RoomController {
+@RequestMapping("/api/admin/room")
+public class AdminRoomController {
 
 
-	private final RoomService roomService;
+    private final RoomService roomService;
 
-
-	@PostMapping
-	public Room create(@Valid @RequestBody RoomDto roomDto){
-		return roomService.create(roomDto);
-	}
+    @PostMapping
+    public Room create(@Valid @RequestBody RoomDto roomDto){
+        return roomService.create(roomDto);
+    }
 
 }

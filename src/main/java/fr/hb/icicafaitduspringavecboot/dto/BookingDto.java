@@ -1,5 +1,6 @@
 package fr.hb.icicafaitduspringavecboot.dto;
 
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -16,6 +17,7 @@ public class BookingDto {
     private String lodgingId;
 
     @NotNull(message = "You have to set a starting date")
+    @Future(message = "Your reservation can't be made in the past")
     private LocalDateTime startedAt;
 
 //    @NotNull(message = "You have to set an ending date")

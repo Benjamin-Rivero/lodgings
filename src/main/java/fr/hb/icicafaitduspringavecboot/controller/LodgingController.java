@@ -19,11 +19,7 @@ public class LodgingController {
 
     private final LodgingService lodgingService;
 
-    @PostMapping
-    @JsonView(JsonViewLodging.LodgingShowView.class)
-    public Lodging createLodging(@Valid @RequestBody LodgingDto lodgingDto){
-        return lodgingService.create(lodgingDto);
-    }
+
 
     @GetMapping
     @JsonView(JsonViewLodging.LodgingMinimalView.class)
@@ -37,10 +33,6 @@ public class LodgingController {
         return lodgingService.findById(id);
     }
 
-    @PostMapping("/addmedia")
-    @JsonView(JsonViewLodging.LodgingMinimalView.class)
-    public Lodging addMedia(@RequestBody MediaDto mediaDto){
-        return lodgingService.addMedia(mediaDto);
-    }
+
 
 }

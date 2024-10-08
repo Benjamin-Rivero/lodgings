@@ -26,7 +26,7 @@ public class FavoriteController {
 
     @GetMapping("/{user}")
     @JsonView(JsonViewFavorite.FavoriteMinimalView.class)
-    public List<Favorite> favorityByUser(@PathVariable(name = "user") String slug){
+    public List<Favorite> favoriteByUser(@PathVariable(name = "user") String slug){
         return favoriteService.getByUser(slug);
     }
 

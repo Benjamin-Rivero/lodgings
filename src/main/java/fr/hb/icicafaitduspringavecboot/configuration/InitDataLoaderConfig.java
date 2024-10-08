@@ -26,7 +26,7 @@ public class InitDataLoaderConfig implements CommandLineRunner {
     private static final int NB_REVIEW = 100;
     private final int NB_FAVORITE = 25;
     private final int NB_USER = 125;
-//    private final int NB_ROOM = 25;
+    //    private final int NB_ROOM = 25;
 //    private final int NB_ADDRESS = 50;
     private final int NB_LODGING = 50;
     private final UserRepository userRepository;
@@ -47,24 +47,29 @@ public class InitDataLoaderConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 //        createAddress();
-        createUsers();
+        /*createUsers();
         createRooms();
         createLodgings();
         createFavorites();
         createBookings();
-        createReviews();
+        createReviews();*/
     }
 
-    private void createUsers(){
+    private void createUsers() {
         Faker faker = new Faker(Locale.of("fr"));
+        List<String> existingEmail = new ArrayList<>();
 
-        if(userRepository.count()>=50) return;
+        if (userRepository.count() >= 50) return;
 
-        for(int i = 0 ; i<NB_USER ; i++){
+        for (int i = 0; i < NB_USER; i++) {
             UserCreationDto userCreationDto = new UserCreationDto();
             userCreationDto.setFirstName(faker.name().firstName());
             userCreationDto.setLastName(faker.name().lastName());
-            userCreationDto.setEmail(String.format("%s.%s@gmail.com",userCreationDto.getFirstName().toLowerCase(),userCreationDto.getLastName().toLowerCase()));
+            String fullName = String.join(".",userCreationDto.getFirstName().toLowerCase(),userCreationDto.getLastName().toLowerCase());
+            if(existingEmail.contains(fullName)) fullName += i;
+            System.out.println(fullName);
+            userCreationDto.setEmail(String.format("%s@gmail.com", fullName));
+            existingEmail.add(fullName);
             userCreationDto.setPassword("12345");
             userCreationDto.setBirthDate(faker.timeAndDate().birthday());
             User user = userService.createInit(userCreationDto);
@@ -75,10 +80,10 @@ public class InitDataLoaderConfig implements CommandLineRunner {
         userRepository.flush();
     }
 
-    private void createRooms(){
-        List<String> roomTypes = List.of("Kitchen","Bathroom","Master Bedroom","Living Room","Attic","Basement","Garage","Jacuzzi","Pool","1 Bed Bedroom","2 Bed Bedroom");
+    private void createRooms() {
+        List<String> roomTypes = List.of("Kitchen", "Bathroom", "Master Bedroom", "Living Room", "Attic", "Basement", "Garage", "Jacuzzi", "Pool", "1 Bed Bedroom", "2 Bed Bedroom");
 
-        if(roomRepository.count() < roomTypes.size()) {
+        if (roomRepository.count() < roomTypes.size()) {
             for (String roomType : roomTypes) {
                 RoomDto roomDto = new RoomDto();
                 roomDto.setType(roomType);
@@ -101,12 +106,12 @@ public class InitDataLoaderConfig implements CommandLineRunner {
 //        addressRepository.flush();
 //    }
 
-    private void createLodgings(){
+    private void createLodgings() {
         Random random = new Random();
         Faker faker = new Faker(Locale.of("fr"));
         List<String> alreadyAppeared = new ArrayList<>();
 
-        if(lodgingRepository.count() >= NB_LODGING) return;
+        if (lodgingRepository.count() >= NB_LODGING) return;
 
         for (int i = 0; i < NB_LODGING; i++) {
             LodgingDto lodgingDto = new LodgingDto();
@@ -116,8 +121,8 @@ public class InitDataLoaderConfig implements CommandLineRunner {
             } while (alreadyAppeared.contains(name));
             alreadyAppeared.add(name);
             lodgingDto.setName(name);
-            lodgingDto.setCapacity((int)Math.ceil(Math.random()*8));
-            lodgingDto.setNightPrice((int)Math.ceil(Math.random()*100));
+            lodgingDto.setCapacity((int) Math.ceil(Math.random() * 8));
+            lodgingDto.setNightPrice((int) Math.ceil(Math.random() * 100));
             lodgingDto.setDescription(String.valueOf(faker.lorem().paragraph(2)));
             lodgingDto.setAccessible(faker.bool().bool());
             lodgingDto.setAddressDto(createRandomAddress(faker));
@@ -127,9 +132,10 @@ public class InitDataLoaderConfig implements CommandLineRunner {
             lodging.getRooms().add(roomService.findById(2L));
             lodging.getRooms().add(roomService.findById(3L));
             lodging.getRooms().add(roomService.findById(4L));
-            for(int j = 0; j<Math.random()*4;j++){
-                Room room = roomService.findById(random.nextLong(5,11));
-                if(lodging.getRooms().stream().noneMatch(r -> Objects.equals(r.getId(), room.getId()))) lodging.getRooms().add(room);
+            for (int j = 0; j < Math.random() * 4; j++) {
+                Room room = roomService.findById(random.nextLong(5, 11));
+                if (lodging.getRooms().stream().noneMatch(r -> Objects.equals(r.getId(), room.getId())))
+                    lodging.getRooms().add(room);
             }
             lodgingRepository.save(lodging);
         }
@@ -143,21 +149,21 @@ public class InitDataLoaderConfig implements CommandLineRunner {
         addressDto.setZipCode(faker.address().zipCode());
         addressDto.setCity(faker.address().city());
         addressDto.setCountry("France");
-        addressDto.setLongitude(((Float)(float) ((Math.random() * (8.135000 - 2.315800)) + 2.315800)).toString());
-        addressDto.setLatitude(((Float)(float) ((Math.random() * (51.052100 - 42.195800)) + 42.195800)).toString());
+        addressDto.setLongitude(((Float) (float) ((Math.random() * (8.135000 - 2.315800)) + 2.315800)).toString());
+        addressDto.setLatitude(((Float) (float) ((Math.random() * (51.052100 - 42.195800)) + 42.195800)).toString());
         addressDto.setMore(String.valueOf(faker.lorem().paragraph(1)));
         return addressDto;
     }
 
-    private void createFavorites(){
+    private void createFavorites() {
 
-        if(favoriteRepository.count() >= NB_FAVORITE) return;
+        if (favoriteRepository.count() >= NB_FAVORITE) return;
 
         for (int i = 0; i < NB_FAVORITE; i++) {
             Favorite favorite = new Favorite();
             User user = userService.getOneRandom();
             Lodging lodging = lodgingService.getOneRandom();
-            favorite.setId(new FavoriteId(user.getId(),lodging.getId()));
+            favorite.setId(new FavoriteId(user.getId(), lodging.getId()));
             favorite.setCreatedAt(LocalDateTime.now());
             favorite.setUser(user);
             favorite.setLodging(lodging);
@@ -166,16 +172,16 @@ public class InitDataLoaderConfig implements CommandLineRunner {
         favoriteRepository.flush();
     }
 
-    private void createBookings(){
+    private void createBookings() {
         Faker faker = new Faker(Locale.of("fr"));
 
-        if(bookingRepository.count() >= NB_BOOKING) return;
+        if (bookingRepository.count() >= NB_BOOKING) return;
 
-        for (int i = 0; i < NB_BOOKING ; i++) {
+        for (int i = 0; i < NB_BOOKING; i++) {
             BookingDto bookingDto = new BookingDto();
-            LocalDateTime started = LocalDateTime.ofInstant(faker.timeAndDate().future(100, TimeUnit.DAYS),ZoneId.systemDefault());
+            LocalDateTime started = LocalDateTime.ofInstant(faker.timeAndDate().future(100, TimeUnit.DAYS), ZoneId.systemDefault());
             bookingDto.setStartedAt(started);
-            bookingDto.setQuantity((int)Math.ceil(Math.random()*6));
+            bookingDto.setQuantity((int) Math.ceil(Math.random() * 6));
             bookingDto.setLodgingId(lodgingService.getOneRandom().getId());
             Booking booking = bookingService.create(bookingDto);
             booking.setUser(userService.getOneRandom());
@@ -184,16 +190,16 @@ public class InitDataLoaderConfig implements CommandLineRunner {
         bookingRepository.flush();
     }
 
-    private void createReviews(){
+    private void createReviews() {
         Faker faker = new Faker(Locale.of("fr"));
 
-        if(reviewRepository.count() >= NB_REVIEW) return;
+        if (reviewRepository.count() >= NB_REVIEW) return;
 
         for (int i = 0; i < NB_REVIEW; i++) {
             Review review = new Review();
             review.setCreatedAt(LocalDateTime.now());
             review.setContent(faker.yoda().quote());
-            review.setRating((float)Math.random()*5);
+            review.setRating((float) Math.random() * 5);
             review.setUser(userRepository.getOneRandom());
             review.setLodging(lodgingRepository.getOneRandom());
             reviewRepository.save(review);
@@ -235,7 +241,6 @@ public class InitDataLoaderConfig implements CommandLineRunner {
 
         return adjectif + " " + nom + " " + lieu;
     }
-
 
 
 }
