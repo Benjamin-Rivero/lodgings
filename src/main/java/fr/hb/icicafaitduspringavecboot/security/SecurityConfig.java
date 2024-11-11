@@ -44,7 +44,8 @@ public class SecurityConfig {
 										antMatcher("/swagger-ui/**"),
 										antMatcher("/api/user/validate"),
 										antMatcher(HttpMethod.GET, "/api/lodging"),
-										antMatcher(HttpMethod.GET, "/api/lodging/**")
+										antMatcher(HttpMethod.GET, "/api/lodging/**"),
+										antMatcher("/api/user/page")
 								).permitAll()
 								.requestMatchers(
 										antMatcher( "/api/favorite"),
@@ -53,7 +54,8 @@ public class SecurityConfig {
 										antMatcher("/api/address"),
 										antMatcher( "/api/booking"),
 										antMatcher( "/api/review"),
-										antMatcher( "/api/review/**")
+										antMatcher( "/api/review/**"),
+										antMatcher(HttpMethod.POST,"/api/address/upload")
 								).authenticated()
 								.requestMatchers(
 										antMatcher(HttpMethod.DELETE, "/api/**"),

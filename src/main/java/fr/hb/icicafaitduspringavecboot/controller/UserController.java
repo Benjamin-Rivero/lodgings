@@ -7,6 +7,12 @@ import fr.hb.icicafaitduspringavecboot.jsonviews.JsonViewUser;
 import fr.hb.icicafaitduspringavecboot.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -45,6 +51,15 @@ public class UserController {
     public String validate(@RequestParam(name = "token") String token){
         if(userService.validate(token)) return "Account activated";
         else return "Problem while activating account";
+    }
+
+    @GetMapping("/page")
+    @JsonView(JsonViewUser.UserMinimalView.class)
+    public PagedModel<EntityModel<User>> userPage(@PageableDefault(
+        size = 12,
+            direction = Sort.Direction.DESC
+    ) Pageable pageable, PagedResourcesAssembler<User> assembler){
+        return userService.test(pageable,assembler);
     }
 
 

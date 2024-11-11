@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import fr.hb.icicafaitduspringavecboot.entity.interfaces.CreatedAtInterface;
 import fr.hb.icicafaitduspringavecboot.entity.interfaces.SluggerInterface;
 import fr.hb.icicafaitduspringavecboot.jsonviews.JsonViewUser;
+import fr.hb.icicafaitduspringavecboot.jsonviews.JsonViews;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Entity
 @Data
+@JsonView(JsonViews.NotShow.class)
 public class User implements CreatedAtInterface, SluggerInterface, UserDetails {
 
     @Id

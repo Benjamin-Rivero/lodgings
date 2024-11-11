@@ -29,7 +29,7 @@ public class EmailService {
 				+ "Ou coller ce lien dans votre navigateur<br>"
 				+ "[[URL]]<br>"
 				+ "Merci,<br>"
-				+ "Air-ish BNB.";
+				+ "Air BNWish.";
 
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);

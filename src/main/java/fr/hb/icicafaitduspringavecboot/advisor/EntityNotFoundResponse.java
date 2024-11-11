@@ -17,7 +17,6 @@ public class EntityNotFoundResponse {
     CustomResponse entityNotFoundHandler(EntityNotFoundException exception){
         CustomResponse response = new CustomResponse();
         response.setStatus(HttpStatus.BAD_GATEWAY.value());
-        response.setField(exception.getField());
         response.setValue(exception.getValue());
         response.setEntity(exception.getEntity());
         return response;

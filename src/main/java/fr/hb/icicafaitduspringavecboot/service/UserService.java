@@ -1,7 +1,5 @@
 package fr.hb.icicafaitduspringavecboot.service;
 
-import fr.hb.icicafaitduspringavecboot.dto.AddressDto;
-import fr.hb.icicafaitduspringavecboot.entity.Address;
 import fr.hb.icicafaitduspringavecboot.exceptions.AlreadyActiveException;
 import fr.hb.icicafaitduspringavecboot.exceptions.ExpiredCodeException;
 import fr.hb.icicafaitduspringavecboot.security.PasswordEncoderConfig;
@@ -10,10 +8,13 @@ import fr.hb.icicafaitduspringavecboot.dto.UserUpdateDto;
 import fr.hb.icicafaitduspringavecboot.entity.User;
 import fr.hb.icicafaitduspringavecboot.exceptions.EntityNotFoundException;
 import fr.hb.icicafaitduspringavecboot.repository.UserRepository;
-import fr.hb.icicafaitduspringavecboot.service.interfaces.ServiceListInterface;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
-import org.json.JSONArray;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -150,5 +151,13 @@ public class UserService implements UserDetailsService {
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("email",email,"User"));
+    }
+
+    public PagedModel<EntityModel<User>> test(Pageable pageable, PagedResourcesAssembler<User> assembler){
+        Page<User> users = userRepository.findAll(pageable);
+
+        System.out.println(users.getTotalElements());
+        PagedModel<EntityModel<User>> page = assembler.toModel(users);
+        return page;
     }
 }
