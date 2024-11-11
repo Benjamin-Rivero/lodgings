@@ -1,5 +1,7 @@
 package fr.hb.icicafaitduspringavecboot.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import fr.hb.icicafaitduspringavecboot.jsonviews.JsonViewMedia;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,8 +10,6 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(indexes = {
         @Index(columnList = "path")
 })
@@ -17,12 +17,15 @@ public class Media {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(JsonViewMedia.Id.class)
     private Long id;
 
     @Column(nullable = false, unique = true)
+    @JsonView(JsonViewMedia.Path.class)
     private String path;
 
     @Column(nullable = false)
+    @JsonView(JsonViewMedia.Extension.class)
     private String extension;
 
 //    @ManyToOne

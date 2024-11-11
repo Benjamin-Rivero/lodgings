@@ -23,9 +23,9 @@ public class CreatedAtListener implements PreInsertEventListener {
     private boolean hasCreatedAt(Object o) throws NoSuchFieldException {
         if (o instanceof CreatedAtInterface cai) {
             if (cai.getCreatedAt() == null) {
+                cai.setCreatedAt(LocalDateTime.now());
                 return true;
             }
-            cai.setCreatedAt(LocalDateTime.now());
         }
         return false;
     }

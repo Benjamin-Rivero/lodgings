@@ -1,6 +1,8 @@
 package fr.hb.icicafaitduspringavecboot.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import fr.hb.icicafaitduspringavecboot.entity.interfaces.CreatedAtInterface;
+import fr.hb.icicafaitduspringavecboot.jsonviews.JsonViewReview;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,23 +14,28 @@ public class Review implements CreatedAtInterface {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(JsonViewReview.Id.class)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false,columnDefinition = "TEXT")
+    @JsonView(JsonViewReview.Content.class)
     private String content;
 
-    @Column(nullable = false)
-    private float rating;
+    @JsonView(JsonViewReview.Rating.class)
+    private Float rating;
 
     @Column(nullable = false)
+    @JsonView(JsonViewReview.CreatedAt.class)
     private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonView(JsonViewReview.User.class)
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "lodging_id")
+    @JsonView(JsonViewReview.Lodging.class)
     private Lodging lodging;
 
 }

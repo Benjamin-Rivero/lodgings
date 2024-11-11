@@ -1,17 +1,16 @@
 package fr.hb.icicafaitduspringavecboot.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import fr.hb.icicafaitduspringavecboot.dto.FavoriteDto;
 import fr.hb.icicafaitduspringavecboot.entity.Favorite;
 import fr.hb.icicafaitduspringavecboot.entity.FavoriteId;
-import fr.hb.icicafaitduspringavecboot.entity.Lodging;
-import fr.hb.icicafaitduspringavecboot.entity.User;
+import fr.hb.icicafaitduspringavecboot.jsonviews.JsonViewFavorite;
 import fr.hb.icicafaitduspringavecboot.service.FavoriteService;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/favorite")
@@ -20,9 +19,15 @@ public class FavoriteController {
 
     private final FavoriteService favoriteService;
 
-    @PostMapping("/favorite")
-    public Favorite favorite(@Valid @RequestBody FavoriteDto favoriteDto){
-        return favoriteService.create(favoriteDto);
+    @PostMapping
+    public boolean favorite(@RequestBody FavoriteDto favoriteDto, Principal principal){
+        return favoriteService.create(favoriteDto, principal);
+    }
+
+    @GetMapping("/{user}")
+    @JsonView(JsonViewFavorite.FavoriteMinimalView.class)
+    public List<Favorite> favoriteByUser(@PathVariable(name = "user") String slug){
+        return favoriteService.getByUser(slug);
     }
 
 }

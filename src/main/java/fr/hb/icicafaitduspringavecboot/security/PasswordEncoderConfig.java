@@ -1,5 +1,4 @@
-package fr.hb.icicafaitduspringavecboot.configuration;
-
+package fr.hb.icicafaitduspringavecboot.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
